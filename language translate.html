@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Language Translator</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #e6e6fa;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .box {
+            background-color: white;
+            width: 60%;
+            margin: auto;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px gray;
+        }
+
+        h1 {
+            color: green;
+        }
+
+        textarea {
+            width: 90%;
+            height: 120px;
+            padding: 10px;
+            font-size: 16px;
+            margin-top: 15px;
+        }
+
+        select {
+            padding: 10px;
+            margin: 10px;
+        }
+
+        button {
+            background-color: purple;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+
+        button:hover {
+            background-color: darkviolet;
+        }
+
+        #result {
+            background-color: #f2f2f2;
+            padding: 15px;
+            min-height: 50px;
+            margin-top: 15px;
+            border-radius: 5px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="box">
+
+        <h1>Language Translation Tool</h1>
+
+        <p>Enter your text and select the languages to translate.</p>
+
+        <select id="from">
+            <option value="en">English</option>
+            <option value="kn">Kannada</option>
+            <option value="hi">Hindi</option>
+            <option value="ta">Tamil</option>
+            <option value="te">Telugu</option>
+            <option value="fr">French</option>
+            <option value="es">Spanish</option>
+            <option value="en">English</option>
+        </select>
+
+        <b> To </b>
+        <select id="to">
+            <option value="kn">Kannada</option>
+            <option value="en">English</option>
+            <option value="hi">Hindi</option>
+            <option value="ta">Tamil</option>
+            <option value="te">Telugu</option>
+            <option value="fr">French</option>
+            <option value="es">Spanish</option>
+            <option value="mr">Marathi</option>
+        </select>
+        <button onclick="swapLanguages()">⇄</button>
+
+    </div>
+
+        <textarea id="input" placeholder="Enter your text here..."></textarea>
+
+        <br>
+
+        <button onclick="translateText()">Translate</button>
+
+        <h3>Translated Text:</h3>
+
+        <div id="result">
+            Translation will appear here.
+        </div>
+
+        <br>
+
+        <button onclick="copyText()">Copy Text</button>
+
+    </div>
+
+    <script>
+
+        function translateText() {
+
+            var text = document.getElementById("input").value;
+
+            var from = document.getElementById("from").value;
+
+            var to = document.getElementById("to").value;
+
+            if (text == "") {
+                alert("Please enter some text");
+                return;
+            }
+
+            if (from == to) {
+                alert("Please select different languages");
+                return;
+            }
+
+            document.getElementById("result").innerHTML = "Translating...";
+
+            fetch("https://api.mymemory.translated.net/get?q="
+                + encodeURIComponent(text)
+                + "&langpair=" + from + "|" + to)
+
+            .then(response => response.json())
+
+            .then(data => {
+
+                document.getElementById("result").innerHTML =
+                    data.responseData.translatedText;
+
+            })
+
+            .catch(error => {
+
+                document.getElementById("result").innerHTML =
+                    "Translation failed. Please try again.";
+
+            });
+
+        }
+
+
+        function copyText() {
+
+            var text = document.getElementById("result").innerText;
+
+            navigator.clipboard.writeText(text);
+
+            alert("Text copied successfully!");
+
+        }
+
+        function swapLanguages() {
+
+           var from = document.getElementById("from");
+           var to = document.getElementById("to");
+
+           var temp = from.value;
+
+           from.value = to.value;
+ 
+           to.value = temp;
+        }
+
+
+       
+            </script>
+
+</body>
+</html>
