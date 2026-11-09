@@ -1,3 +1,4 @@
+[language translate.html](https://github.com/user-attachments/files/34580607/language.translate.html)
 [index.html](https://github.com/user-attachments/files/34580193/index.html)
 # html-JavaScript-Language-translator-
 language translator
